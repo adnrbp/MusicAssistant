@@ -1,0 +1,30 @@
+# Base
+argon2-cffi==19.1.0
+cffi==1.13.0
+pycparser==2.19
+python-dateutil==2.8.0
+pytz==2019.1
+six==1.12.0
+sqlparse==0.3.0
+text-unidecode==1.2
+
+
+# Django
+Django==2.2.2
+
+# Environment
+django-environ==0.4.5
+
+# Django REST Framework
+djangorestframework==3.10.2
+
+# Development
+django-extensions==2.2.9
+
+# Tests
+factory-boy==2.12.0
+Faker==2.0.0
+mock==3.0.5
+
+# Static files
+whitenoise==4.1.4
