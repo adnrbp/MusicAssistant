@@ -148,3 +148,5 @@ Temporary Items
 .ipython/
 .env
 .envs/*
+
+*.sqlite3
