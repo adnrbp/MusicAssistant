@@ -28,3 +28,6 @@ mock==3.0.5
 
 # Static files
 whitenoise==4.1.4
+
+# Networking
+requests==2.23.0

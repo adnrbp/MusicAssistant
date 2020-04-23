@@ -5,8 +5,11 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from django.conf import settings
+# Helpers
+from .helpers import Handlers
+from .helpers import FbWebhookAPI
 
+# Constants
 from .constants import *
 
 class WebhookAPIView(APIView):
@@ -15,16 +18,10 @@ class WebhookAPIView(APIView):
     """
     def get(self, request, *args, **kwargs):
         """ Register webhook with Facebook Messenger """
-        if request.GET.get('hub.verify_token', '') == settings.FACEBOOK_VERIFY_TOKEN:
-            data=int(request.GET.get('hub.challenge'))
-            return Response(data,status=status.HTTP_200_OK)
-        return Response(
-            {'error': 'bad parameter'},
-            status=status.HTTP_400_BAD_REQUEST)
+        (data, response_status) = FbWebhookAPI.verify_token(request.GET)
+        return Response(data,status=response_status)
 
     def post(self, request, *args, **kwargs):
         """ Receive messages from user entries in a request"""
-        for entry in request.data['entry']:
-            for message in entry['messaging']:
-                print(message)
-                return Response({'success': True})
+        data = FbWebhookAPI.process_message(request.data)
+        return Response(data)

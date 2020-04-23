@@ -20,18 +20,13 @@ APPS_DIR = BASE_DIR.path('music_assistant')
 env = environ.Env()
 
 FACEBOOK_VERIFY_TOKEN = env('FB_VERIFY_TOKEN')
+FACEBOOK_ACCESS_TOKEN = env('FB_ACCESS_TOKEN')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env(
 	'DJANGO_SECRET_KEY', 
 	default='!9_l!%yi=-aq&yw(2t+6p6^d(^ek4njr0pw2zjjf@#^_=vw_#4'
 )
 
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = [
