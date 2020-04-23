@@ -13,9 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 
 urlpatterns = [
+    # Django Admin
+    path('', include(('music_assistant.songs.urls','songs'),namespace='songs')),
+    path('', include(('music_assistant.bot.urls','webhook'),namespace='webhook')),
     path('admin/', admin.site.urls),
 ]
