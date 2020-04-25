@@ -19,6 +19,8 @@ APPS_DIR = BASE_DIR.path('music_assistant')
 
 env = environ.Env()
 
+MUSIX_MATCH_KEY = env('MUSIX_MATCH_KEY')
+
 FACEBOOK_VERIFY_TOKEN = env('FB_VERIFY_TOKEN')
 FACEBOOK_ACCESS_TOKEN = env('FB_ACCESS_TOKEN')
 
@@ -44,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'music_assistant.bot.apps.BotConfig',
+    'music_assistant.songs.apps.SongsConfig',
 ]
 
 MIDDLEWARE = [
