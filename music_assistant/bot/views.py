@@ -23,5 +23,5 @@ class WebhookAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         """ Receive messages from user entries in a request"""
-        data = FbWebhookAPI.process_message(request.data)
+        data = FbWebhookAPI.process_message(request.data,request.session)
         return Response(data)

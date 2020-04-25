@@ -45,18 +45,20 @@ class FbWebhookAPITest(TestCase):
         # Assert
         self.assertIn('error',data)
 
-    @patch('music_assistant.bot.helpers.fb_webhook.Handlers.facebook_message', autospec=True)
-    def test_fb_message_processing(self,mock_handler_fb_msg):
+    @patch('music_assistant.bot.helpers.fb_webhook.Handlers', autospec=True)
+    def test_fb_message_processing(self,Handlers_mock):
         # Arrange
+        mock_handler = Handlers_mock.return_value
         message_content = ['hola']
         request = {"entry": [
                     {"messaging": message_content},
                     ]}
+        session = {}
         # Act
-        data = FbWebhookAPI.process_message(request)
+        data = FbWebhookAPI.process_message(request,session)
         # Assert
         self.assertEqual(
-                mock_handler_fb_msg.call_count, 
+                mock_handler.facebook_message.call_count,
                 len(message_content)
             )
-        mock_handler_fb_msg.assert_called_once_with(message_content[0])
+        mock_handler.facebook_message.assert_called_once_with(message_content[0])

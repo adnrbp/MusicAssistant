@@ -26,26 +26,27 @@ class ResponseType(Enum):
 class Handlers():
     """ Handle messages and Build Responders"""
 
-    @classmethod
-    def facebook_message(cls, message):
+    def __init__(self,session):
+        self.session = session
+
+    def facebook_message(self, message):
         """ 
         Create an instance of FB Message Response Builder and handle its response
         """
-        (sender_id, content, event_type) = cls.process_type(message)
+        (sender_id, content, event_type) = self.process_type(message)
         
-        cls.generate_response(sender_id, content, event_type)
+        self.generate_response(sender_id, content, event_type)
 
-    @classmethod
-    def process_type(cls, message):
+    def process_type(self, message):
         """ Determine/Define the type of message and call the handler."""
-        print("\n\n MENSAJEEEEE TYPE")
-        pprint(message)
+        # print("\n\n MENSAJEEEEE TYPE")
+        # pprint(message)
         if 'message' in message:
             if 'quick_reply' in message['message']:
                 sender_id = message['sender']['id']
                 postback_payload = message['message']['quick_reply']['payload']
 
-                (response_data, response_type) = cls.process_postback(postback_payload)
+                (response_data, response_type) = self.process_postback(postback_payload)
                 return (sender_id, response_data, response_type)
 
 
@@ -55,7 +56,7 @@ class Handlers():
                 #event_type = MessageType.text
 
                 # response_data should be a dictionary of results/etc
-                (response_data, response_type) = cls.process_text(message_text)
+                (response_data, response_type) = self.process_text(message_text)
                 return (sender_id, response_data, response_type)
 
         if 'postback' in message:
@@ -63,11 +64,10 @@ class Handlers():
             postback_payload = message['postback']['payload']
             #event_type = MessageType.action
             
-            (response_data, response_type) = cls.process_postback(postback_payload)
+            (response_data, response_type) = self.process_postback(postback_payload)
             return (sender_id, response_data, response_type)
 
-    @classmethod
-    def generate_response(cls, sender_id, received_message, response_type):
+    def generate_response(self, sender_id, received_message, response_type):
         """ 
         Create an instance of FB Message Response Builder and handle its response
         """
@@ -77,26 +77,30 @@ class Handlers():
         elif response_type == ResponseType.text:
             fb.text_message(received_message)
 
-    @classmethod
-    def process_text(cls, message_text):
+    def process_text(self, message_text):
         """ 
         Understand text, process something and create response
         """
         # check session from request
-        # if session["last_message"] == "LYRICS_PAYLOAD"
-        #   MusixMatchAPI.search_lyrics(message_text)
-        #   return (response_data, ResponseType.results)
+        print("\n\n Processing text")
+        if 'last_message' in self.session.keys():
+            print("GOT the KEY")
+        if self.session.get("last_message", "") == "LYRICS_PAYLOAD":
+            #response_data = MusixMatchAPI.search_lyrics(message_text)
+            response_data = "yourSong is from me"
+            return (response_data, ResponseType.text) #.results
         # else
 
         return (message_text, ResponseType.default)
 
-    @classmethod
-    def process_postback(cls, postback_payload):
+    def process_postback(self, postback_payload):
         """ 
         Understand payload-type(switch), process something and create response
         """
         if postback_payload == "LYRICS_PAYLOAD":
             response_data = "escribe la letra que quieres buscar :)"
-            # session["last_message"] = "LYRICS_PAYLOAD"
+            self.session["last_message"] = "LYRICS_PAYLOAD"
+            print("\n SAVING KEY")
+            print(self.session["last_message"])
             return (response_data, ResponseType.text)
        

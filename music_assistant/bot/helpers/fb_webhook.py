@@ -16,7 +16,7 @@ class FbWebhookAPI():
     @classmethod
     def verify_token(cls, request):
         """ Register webhook with Facebook Messenger """
-        print(request)
+        # print(request)
         if request.get('hub.verify_token', '') == FB_VERIFY_TOKEN:
             data= int(request.get('hub.challenge'))
             result = status.HTTP_200_OK
@@ -26,11 +26,12 @@ class FbWebhookAPI():
         return (data, result)
 
     @classmethod
-    def process_message(cls, entries):    
+    def process_message(cls, entries, session):    
         """ Receive messages from user entries in a request"""
-        print("\n ENTRIES!!!!")
-        pprint(entries)
+        # print("\n ENTRIES!!!!")
+        # pprint(entries)
+        handler = Handlers(session)
         for entry in entries['entry']:
             for message in entry['messaging']:
-                Handlers.facebook_message(message)
+                handler.facebook_message(message)
         return {'success': True}

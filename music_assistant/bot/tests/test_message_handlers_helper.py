@@ -10,7 +10,7 @@ class HandlersTest(TestCase):
     """ Test module for Handlers helper """
 
     def setUp(self):
-        pass
+        self.handler = Handlers(session={'1234'})
 
     @patch.object(
         Handlers,'process_text', 
@@ -22,7 +22,7 @@ class HandlersTest(TestCase):
         message = {'message': {'text': 'hola'},'sender': {'id': '123'}}
 
         # Act
-        Handlers.process_type(message)
+        self.handler.process_type(message)
         # Assert
         self.assertEqual(mock_handlers_process_text.call_count,1)
 
@@ -41,7 +41,7 @@ class HandlersTest(TestCase):
                     'sender': {'id': '123'}
                   }
         # Act
-        Handlers.process_type(message)
+        self.handler.process_type(message)
         # Assert
         self.assertEqual(mock_handlers_process_postback.call_count,1)
 
@@ -57,7 +57,7 @@ class HandlersTest(TestCase):
         response_type = ResponseType.default
 
         # Act
-        Handlers.generate_response(sender_id, received_message, response_type)
+        self.handler.generate_response(sender_id, received_message, response_type)
 
         # Assert
         FbMessageAPI_mock.assert_called_with(sender_id=sender_id)
@@ -76,7 +76,7 @@ class HandlersTest(TestCase):
         response_type = ResponseType.text
 
         # Act
-        Handlers.generate_response(sender_id, received_message, response_type)
+        self.handler.generate_response(sender_id, received_message, response_type)
 
         # Assert
         FbMessageAPI_mock.assert_called_with(sender_id=sender_id)
