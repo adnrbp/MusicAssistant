@@ -15,8 +15,16 @@ class FbMessageAPI:
     """
     Build and Send Response messages to users
     """
-    def __init__(self, sender_id):
+    def __init__(self, sender_id, fb_url=fb_base_url):
         self.sender_id = sender_id
+
+        self.fb_base_url = fb_url
+        self.fb_messages_url = self.fb_base_url + 'me/messages'
+        
+        self.access_token = FB_ACCESS_TOKEN
+        self.access_token_param = {
+            'access_token': self.access_token
+        }
         self.get_user_details()
 
     def get_user_details(self):
@@ -25,24 +33,31 @@ class FbMessageAPI:
 
         user_details_params = {
                 'fields': 'first_name,last_name,profile_pic', 
-                'access_token': FB_ACCESS_TOKEN
+                'access_token': self.access_token
             }
         user_details = requests.get(
             user_details_url, 
             params = user_details_params
         ).json()
-        pprint(user_details)
+        #pprint(user_details)
         self.user_name = user_details['first_name']
         self.user_last_name = user_details['last_name']
+    
+    def save_user_id(self):
+        """save sender id + store all his messages in db"""
+        pass
         
 
     def send_message(self, response_msg):
         """ Send a response Message to facebook """
         status = requests.post(
             fb_messages_url,
-            params=FB_ACCESS_TOKEN_PARAM,
+            params=self.access_token_param,
             json=response_msg
         )
+        print("\nSENDED MESSAGE:")
+        pprint(response_msg)
+        print("\nSENDED MESSAGE STATUS:")
         pprint(status.json())
 
     def text_message(self, content):
@@ -53,3 +68,24 @@ class FbMessageAPI:
             }
         self.send_message(response_msg)
 
+    def initial_instructions_message(self):
+        """ Structure message payload """
+        response_msg = {
+                "recipient": {"id": self.sender_id}, 
+                "message": {
+                    "text": "Hola" + self.user_name +", Soy un bot de busqueda musical por letras/lyrics",
+                    "quick_replies": [
+                        {
+                            "content_type": "text",
+                            "title": "Buscar Letra",
+                            "payload": "LYRICS_PAYLOAD"
+                        },
+                        {
+                            "content_type": "text",
+                            "title": "Listar Favoritas",
+                            "payload": "FAVORITES_PAYLOAD"
+                        }
+                    ]
+                }
+            }
+        self.send_message(response_msg)
