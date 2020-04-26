@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    # Dev Apps
+    'django_extensions',
     # Local Apps
     'music_assistant.users.apps.UsersConfig',
     'music_assistant.bot.apps.BotConfig',

@@ -5,14 +5,17 @@ Music Assistant is an app to search lyrics and save your favorite songs.
 
 ### 1. List of Features 
   (Must)
-  - [ ] User sends a section of some lyrics
-  - [ ] User receives the song related to that lyrics
-  - [ ] Result song should have the name and artist
-  - [ ] User saves can tag a result song as favorite
-  - [ ] User sees his list of favorite songs
+  - [ ] User sends a section of some lyrics             | (1-Postback + Lyricstext)
+  - [ ] User receives the song related to that lyrics   | (1-RESPONSE)
+  - [ ] Result song should have the name and artist     | (1-RESPONSE)
+  - [ ] User saves can tag a result song as favorite    | (2-postback[add to favorites?])
+  - [ ] User sees his list of favorite songs            | [DB](3-postback:seeMyListOfFavorites)
+  - [X] (keep session per user)
+  - [X] (save all conversations info)
   - [ ] Stats show number of people that used the app
   - [ ] Stats show number of chats per day
-  - [ ] Stats
+  - [ ] Stats show most popular song      | (search all, which gets searchd more frequently)
+  - [ ] Stats show avg session time       | (till last interaction)
   
   (Should) 
   - [ ] ..
@@ -20,7 +23,26 @@ Music Assistant is an app to search lyrics and save your favorite songs.
   (Nice)
   - [ ] ..
 
+### 2. Flujo Mensajes:
+  - facebook -> /webhook -> View -> fb_webhook -> message_handlers -> (fb_messages <-> MusixMatch ) -> facebook
+  - **fb_webhook**: handles inicial connection processing request data
+  - **message_handlers**: determine type of Input Message and call a type of response
+  - **fb_messages**: build bot response, send musixMatch Api requests and send message back to fb
+
+### 3. Progress TO-DO:
+  - [X] handle differences (postback/message)              | message_handlers
+  - [ ] connect and search some lyrics with musixMatch     | MUSICX-service
+  - [X] create models for users and messages
+  - [ ] create models for songs (attrib: favorites) MODELS
+  - [ ] add to favorites postback                          | Interaction+process
+  - [X] session per user (separate) (use-id)
+  - [ ] conversations model (store info stats)             | MODELS
+        -  (date+lyrics searched + song + favorited?)
+  - [ ] show stats in home :D
 
 
-## 2. Installation
-  MusicAsisstant 
+### 4. Tests
+  - ./manage.py test bot.tests
+  - ./manage.py test bot.tests.test_fb_webhook_helper
+  - ./manage.py test bot.tests.test_fb_messages_helper
+  - ./manage.py test bot.tests.test_message_handlers_helper
