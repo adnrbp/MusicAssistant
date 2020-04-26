@@ -5,9 +5,9 @@ Music Assistant is an app to search lyrics and save your favorite songs.
 
 ### 1. List of Features 
   (Must)
-  - [ ] User sends a section of some lyrics             | (1-Postback + Lyricstext)
-  - [ ] User receives the song related to that lyrics   | (1-RESPONSE)
-  - [ ] Result song should have the name and artist     | (1-RESPONSE)
+  - [X] User sends a section of some lyrics             | (1-Postback + Lyricstext)
+  - [X] User receives the song related to that lyrics   | (1-RESPONSE)
+  - [X] Result song should have the name and artist     | (1-RESPONSE)
   - [ ] User saves can tag a result song as favorite    | (2-postback[add to favorites?])
   - [ ] User sees his list of favorite songs            | [DB](3-postback:seeMyListOfFavorites)
   - [X] (keep session per user)
@@ -31,7 +31,7 @@ Music Assistant is an app to search lyrics and save your favorite songs.
 
 ### 3. Progress TO-DO:
   - [X] handle differences (postback/message)              | message_handlers
-  - [ ] connect and search some lyrics with musixMatch     | MUSICX-service
+  - [X] connect and search some lyrics with musixMatch     | MUSICX-service
   - [X] create models for users and messages
   - [ ] create models for songs (attrib: favorites) MODELS
   - [ ] add to favorites postback                          | Interaction+process
@@ -44,5 +44,7 @@ Music Assistant is an app to search lyrics and save your favorite songs.
 ### 4. Tests
   - ./manage.py test bot.tests
   - ./manage.py test bot.tests.test_fb_webhook_helper
-  - ./manage.py test bot.tests.test_fb_messages_helper
   - ./manage.py test bot.tests.test_message_handlers_helper
+  - ./manage.py test bot.tests.test_fb_messages_helper
+
+  - ./manage.py test songs.tests

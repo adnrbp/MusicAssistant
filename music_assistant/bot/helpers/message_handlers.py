@@ -30,8 +30,7 @@ class ResponseType(Enum):
 class Handlers():
     """ Handle messages and Build Responders"""
 
-    def __init__(self,session,sender_id, user_name,conversation_id):
-        self.session = session
+    def __init__(self,sender_id, user_name,conversation_id):
         self.sender_id = sender_id
         self.user_name = user_name
         self.conversation = conversation_id
@@ -87,10 +86,13 @@ class Handlers():
         Message.save_text(conversation, message_text)
         if is_postback:
             if payload=="LYRICS_PAYLOAD":
-                #response_data = MusixMatchAPI.search_lyrics(message_text)
-                response_data = "yourSong is from me"
-                return (response_data, ResponseType.text) #.results
-        # else
+                response_data = MusixMatchAPI.search_lyrics(message_text)
+                if len(response_data) < 1 :
+                    sorry_message = "No pudimos encontrar la canción :("
+                    return (sorry_message, ResponseType.text)
+                else:
+                    return (response_data, ResponseType.results) #.results
+            #if "FAVORITE_" in postback_payload:
         return (message_text, ResponseType.default)
 
     def process_postback(self, postback_payload):
@@ -103,6 +105,15 @@ class Handlers():
             Message.save_text(conversation,response_data,is_postback=True)
             return (response_data, ResponseType.text)
 
+        if "FAVORITE_" in postback_payload:
+            track_id = postback_payload.split("_")[1]
+            # query track + save in db
+            response_data = "se guardó la canción en tu lista de favoritos, id: "+track_id
+            # mostrar lista de favoritos?, indicando como postback
+            conversation = Conversation.set_postback(self.conversation, postback_payload)
+            Message.save_text(conversation,response_data)
+            return (response_data, ResponseType.text)
+
     # OUTPUT
     def generate_response(self, sender_id, received_message, response_type):
         """ 
@@ -113,4 +124,6 @@ class Handlers():
             fb.initial_instructions_message(self.user_name)
         elif response_type == ResponseType.text:
             fb.text_message(received_message, self.user_name)
+        elif response_type == ResponseType.results:
+            fb.lyrics_result_template(received_message, self.user_name)
        

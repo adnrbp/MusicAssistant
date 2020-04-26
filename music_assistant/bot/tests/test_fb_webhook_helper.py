@@ -44,12 +44,15 @@ class FbWebhookAPITest(TestCase):
         
         # Assert
         self.assertIn('error',data)
-
+        
+    @patch('music_assistant.bot.helpers.fb_webhook.FbWebhookAPI.get_user_data', autospec=True)
     @patch('music_assistant.bot.helpers.fb_webhook.Handlers', autospec=True)
-    def test_fb_message_processing(self,Handlers_mock):
+    def test_fb_message_processing(self,Handlers_mock, mock_get_user_data):
         # Arrange
         mock_handler = Handlers_mock.return_value
-        message_content = ['hola']
+        sender_id = 2345435
+        mock_get_user_data.return_value = (sender_id, "user1", 2)
+        message_content = [{'sender': sender_id}]
         request = {"entry": [
                     {"messaging": message_content},
                     ]}

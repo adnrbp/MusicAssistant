@@ -39,7 +39,7 @@ class FbWebhookAPI():
         for entry in entries['entry']:
             for message in entry['messaging']:
                 (sender_id, name, conversation_id ) = cls.get_user_data(message['sender'])
-                handler = Handlers(session, sender_id, name, conversation_id ) #,sender_id)
+                handler = Handlers(sender_id, name, conversation_id )
                 handler.facebook_message(message)
         return {'success': True}
 

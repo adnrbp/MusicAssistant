@@ -28,10 +28,6 @@ class FbMessageAPI:
 
     def get_user_details(self):
         """ Request user information to create a personalized response message"""
-        print("\n\nSENDER_ID")
-        print(self.sender_id)
-        print(self.fb_base_url)
-        print(self.access_token)
         user_details_url = fb_base_url + self.sender_id
 
         user_details_params = {
@@ -46,11 +42,6 @@ class FbMessageAPI:
         user_name = user_details['first_name']
         user_last_name = user_details['last_name']
         return (user_name, user_last_name)
-    
-    def save_user_id(self):
-        """save sender id + store all his messages in db"""
-        pass
-        
 
     def send_message(self, response_msg):
         """ Send a response Message to facebook """
@@ -65,7 +56,7 @@ class FbMessageAPI:
         pprint(status.json())
 
     def text_message(self, content, user_name):
-        """ Structure message payload """
+        """ Build a simple text message for a user """
         response_msg = {
                 "recipient": {"id": self.sender_id}, 
                 "message": {"text": user_name +", "+ content}
@@ -74,7 +65,7 @@ class FbMessageAPI:
 
     #def initial_instructions_message(self, sender_id, content): #content includes text w/ user_name
     def initial_instructions_message(self, user_name):
-        """ Structure message payload """
+        """ Build an initial default message with custom user name"""
         response_msg = {
                 "recipient": {"id": self.sender_id}, 
                 "message": {
@@ -94,3 +85,44 @@ class FbMessageAPI:
                 }
             }
         self.send_message(response_msg)
+
+
+    def result_songs_template(self,content):
+        """Given a list of songs, build its format with Payloads"""
+        elements = []
+        for (index, track) in enumerate(content):
+            element = {
+                "title": "{}. {}".format(index+1,track["track_name"]),
+                "subtitle": track["artist_name"],
+                "buttons": [
+                    {
+                        "type": "postback",
+                        "title" : "Favorita",
+                        "payload": "FAVORITE_{}_PAYLOAD".format(track["id"])
+                    }
+                ]
+            }
+            elements.append(element)
+        return elements
+
+    def lyrics_result_template(self, content, user_name):
+        """ Build an interactive list template based on result songs """
+        response_text = "Encontré {} canciones, espero esté la que buscabas".format(len(content))
+        self.text_message(response_text, user_name)
+        elements = self.result_songs_template(content)
+
+        response_msg = {
+                "recipient": {"id": self.sender_id}, 
+                "message": {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": elements,
+                        }
+                    }
+                }
+            }
+        self.send_message(response_msg)
+
+
