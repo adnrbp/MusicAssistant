@@ -1,0 +1,42 @@
+[
+    {
+        "model": "bot.Message",
+        "pk": 1,
+        "fields": {
+            "created": "2020-04-26 01:58:15.112151",
+            "conversation": 1,
+            "content": "Hola",
+            "is_postback": false
+        }
+    },
+    {
+        "model": "bot.Message",
+        "pk": 2,
+        "fields": {
+            "created": "2020-04-26 02:07:14.731635",
+            "conversation": 2,
+            "content": "Hola",
+            "is_postback": false
+        }
+    },
+    {
+        "model": "bot.Message",
+        "pk": 3,
+        "fields": {
+            "created": "2020-04-26 02:17:14.731635",
+            "conversation": 2,
+            "content": "Hola",
+            "is_postback": false
+        }
+    },
+    {
+        "model": "bot.Message",
+        "pk": 4,
+        "fields": {
+            "created": "2020-04-26 02:19:14.731635",
+            "conversation": 2,
+            "content": "Hola",
+            "is_postback": false
+        }
+    }
+]

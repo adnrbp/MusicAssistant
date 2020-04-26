@@ -1,0 +1,233 @@
+[
+    {
+        "model": "bot.Conversation",
+        "pk": 1,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 1
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 2,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 2
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 3,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 3
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 4,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 4
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 5,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 5
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 6,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 6
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 7,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 7
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 8,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 8
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 9,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 9
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 10,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 10
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 11,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 11
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 12,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 12
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 13,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 13
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 14,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 14
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 15,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 15
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 16,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 16
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 17,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 17
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 18,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 18
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 19,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 19
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 20,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 20
+        }
+    },
+    {
+        "model": "bot.Conversation",
+        "pk": 21,
+        "fields": {
+            "created": "2020-05-09 17:05:23",
+            "last_interaction": "2020-05-09 21:05:23",
+            "has_interaction": true,
+            "last_postback":"",
+            "user": 21
+        }
+    }
+]
