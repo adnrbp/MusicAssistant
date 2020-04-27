@@ -2,6 +2,7 @@
 
 # Django
 from django.db import models
+from django.db.models import Count
 
 # Model Utilities
 from .bots import BotModel
@@ -68,3 +69,11 @@ class Conversation(BotModel):
         conversation.last_postback = postback_payload
         conversation.save(update_fields=["last_postback"])
         return conversation
+
+    @classmethod
+    def quantity_by_day(cls):
+        chats_per_day = cls.objects.extra(select={'day': 'date( created )'}) \
+                            .values('day') \
+                            .annotate(chats=Count('created'))
+        chats_daily_quantity = cls.objects.count() // len(chats_per_day)
+        return chats_daily_quantity
