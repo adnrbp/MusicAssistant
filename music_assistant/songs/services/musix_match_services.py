@@ -60,8 +60,8 @@ class MusixMatchAPI():
             track_id = int(track["track_id"])
             one_track = {}
             if track_id not in result_ids:
-                one_track["id"] = track_id
-                one_track["track_name"] = track["track_name"]
+                one_track["remote_id"] = track_id
+                one_track["name"] = track["track_name"]
                 one_track["artist_name"] = track["artist_name"]
                 result_tracks.append(one_track)
                 result_ids.append(track_id)
@@ -74,8 +74,8 @@ class MusixMatchAPI():
         """ Parse api result to data required """
         track = response["message"]["body"]["track"]
         one_track = {}
-        one_track["id"] = int(track["track_id"]) 
-        one_track["track_name"] = track["track_name"]
+        one_track["remote_id"] = int(track["track_id"]) 
+        one_track["name"] = track["track_name"]
         one_track["artist_name"] = track["artist_name"]
         pprint(one_track)
         return one_track
@@ -98,7 +98,7 @@ class MusixMatchAPI():
 
         result_track = cls.get_one_track_data(response)
 
-        track_name = result_track["track_name"]
+        track_name = result_track["name"]
         artist_name = result_track["artist_name"]
 
         return (track_name, artist_name)

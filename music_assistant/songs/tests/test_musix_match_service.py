@@ -21,7 +21,7 @@ class MusixMatchAPITest(TestCase):
         # Act/When
         track = self.tracks[0]
         number_keys = len(track.keys()) # with id
-        has_name = 'track_name' in track
+        has_name = 'name' in track
         has_track_artist = 'artist_name' in track
         
         # Assert/Then
