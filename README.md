@@ -5,14 +5,14 @@ Music Assistant is an app to search lyrics and save your favorite songs.
 
 ### 1. List of Features 
   (Must)
-  - [X] User sends a section of some lyrics             | (1-Postback + Lyricstext)
-  - [X] User receives the song related to that lyrics   | (1-RESPONSE)
-  - [X] Result song should have the name and artist     | (1-RESPONSE)
-  - [X] User saves can tag a result song as favorite    | (2-postback[add to favorites?])
-  - [X] User sees his list of favorite songs            | [DB](3-postback:seeMyListOfFavorites)
+  - [X] User sends a section of some lyrics
+  - [X] User receives the song related to that lyrics
+  - [X] Result song should have the name and artist
+  - [X] User saves can tag a result song as favorite
+  - [X] User sees his list of favorite songs
   - [X] (keep session per user)
   - [X] (save all conversations info)
-  - [ ] Stats show number of people that used the app
+  - [X] Stats show number of people that used the app
   - [ ] Stats show number of chats per day
   - [X] Stats show most popular song      | (search all, which gets searchd more frequently)
   

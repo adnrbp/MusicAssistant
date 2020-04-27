@@ -173,8 +173,7 @@ class Handlers():
             return (response_data, ResponseType.results)
 
         if postback_payload == "COUNT_USERS":
-            #query
-            users_quantity = 1
+            users_quantity = User.users_quantity()
             response_data = "Aproximadamente {} usuario(s) utilizan el bot".format(users_quantity)
             self.record_message_and_payload(response_data, postback_payload)
             return (response_data, ResponseType.text)
@@ -187,7 +186,6 @@ class Handlers():
             return (response_data, ResponseType.text)
 
         if postback_payload == "TOP_FAVORITES":
-            # query user favorite songs songs
             top_songs = Song.get_top_songs()
 
             response_message = "estos son las top 5 canciones:"
