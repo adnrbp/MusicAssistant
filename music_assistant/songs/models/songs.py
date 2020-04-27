@@ -2,6 +2,8 @@
 
 # Django
 from django.db import models
+from django.db.models import Count
+
 
 class Song(models.Model):
     name = models.CharField("track name", max_length=100)
@@ -34,6 +36,12 @@ class Song(models.Model):
     def favorites_by_user(cls, sender_id):
         """search all favorite songs of a user"""
         songs = cls.objects.filter(favorited_by_users__user__remote_id=sender_id).values()
-        list(songs)
 
         return list(songs)
+
+    @classmethod
+    def get_top_songs(cls):
+        songs = cls.objects
+        favorites_per_song = songs.annotate(favorited_by_users_count=Count('favorited_by_users'))
+        top_songs = favorites_per_song.order_by('-favorited_by_users_count')[:5].values()
+        return list(top_songs)
