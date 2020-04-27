@@ -87,18 +87,18 @@ class FbMessageAPI:
         self.send_message(response_msg)
 
 
-    def result_songs_template(self,content):
+    def result_songs_template(self,content,buttons):
         """Given a list of songs, build its format with Payloads"""
         elements = []
         for (index, track) in enumerate(content):
             element = {
-                "title": "{}. {}".format(index+1,track["track_name"]),
+                "title": "{}. {}".format(index+1,track["name"]),
                 "subtitle": track["artist_name"],
                 "buttons": [
                     {
                         "type": "postback",
-                        "title" : "Favorita",
-                        "payload": "FAVORITE_{}_PAYLOAD".format(track["id"])
+                        "title" : buttons["title"],
+                        "payload": buttons["payload"].format(track["remote_id"])
                     }
                 ]
             }
@@ -107,9 +107,10 @@ class FbMessageAPI:
 
     def lyrics_result_template(self, content, user_name):
         """ Build an interactive list template based on result songs """
-        response_text = "Encontré {} canciones, espero esté la que buscabas".format(len(content))
+        response_text = content["text"]
         self.text_message(response_text, user_name)
-        elements = self.result_songs_template(content)
+
+        elements = self.result_songs_template(content["data"],content["buttons"])
 
         response_msg = {
                 "recipient": {"id": self.sender_id}, 

@@ -100,7 +100,16 @@ class Handlers():
                     sorry_message = "No pudimos encontrar la canción :("
                     return (sorry_message, ResponseType.text)
                 else:
-                    return (found_songs_data, ResponseType.results) #.results
+                    response_message = "Encontré {} canciones, espero esté la que buscabas".format(len(found_songs_data))
+                    response_data = {
+                        "text": response_message,
+                        "data": found_songs_data,
+                        "buttons":{
+                            "title": "Favorita",
+                            "payload": "FAVORITE_{}_PAYLOAD",
+                        }
+                    }
+                    return (response_data, ResponseType.results) #.results
             # if "FAVORITE_" in payload:
             #     return (message_text, ResponseType.default)
 
@@ -123,7 +132,6 @@ class Handlers():
                 response_data = "se guardó la canción {} en tu lista de favoritos".format(track.name)
             else:
                 response_data = "la canción {} ya estaba en tu lista de favoritos".format(track.name)
-            # mostrar lista de favoritos?, indicando como postback
             self.record_message_and_payload(response_data, postback_payload)
 
             return (response_data, ResponseType.text)
@@ -132,11 +140,18 @@ class Handlers():
             # query user favorite songs songs
             favorite_songs = Song.favorites_by_user(self.sender_id)
 
-            response_data = "tienes {} canciones en tu lista de favoritos, estas son:".format(len(favorite_songs))
-            self.record_message_and_payload(response_data, postback_payload)
-
+            response_message = "tienes {} canciones en tu lista de favoritos, estas son:".format(len(favorite_songs))
+            self.record_message_and_payload(response_message, postback_payload)
+            response_data = {
+                "text": response_message,
+                "data": favorite_songs,
+                "buttons":{
+                    "title": "Eliminar",
+                    "payload": "REMOVE_{}_PAYLOAD",
+                }
+            }
             # crear template de ResponseType.favorites
-            return (response_data, ResponseType.text)
+            return (response_data, ResponseType.results)
 
     # OUTPUT
     def generate_response(self, sender_id, received_message, response_type):
@@ -152,6 +167,7 @@ class Handlers():
             fb.lyrics_result_template(received_message, self.user_name)
        
 
+    # services
     def record_message_and_payload(self,message, payload, with_follow_up=False):
         """Save conversation Message and Mark message to followup """
         conversation = Conversation.set_postback(self.conversation, payload)
