@@ -22,9 +22,9 @@ class Message(BotModel):
     #author = models.CharField("writter", max_length=50) # bot or user
 
     @classmethod
-    def save_text(cls,conversation,response_data,is_postback=False):
+    def save_text(cls,conversation,response_data,with_follow_up=False):
         cls.objects.create(
                 conversation=conversation,
                 content=response_data,
-                is_postback=is_postback
+                is_postback=with_follow_up
                 )

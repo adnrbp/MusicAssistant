@@ -55,12 +55,12 @@ class Conversation(BotModel):
         last_conversation = Conversation.objects.filter(id=conversation_id).last()
         last_message = last_conversation.messages.last()
         if last_message is not None:
-            is_postback = last_message.is_postback
+            follow_up_saved_with_postback = last_message.is_postback
             payload = last_message.conversation.last_postback
         else:
-            is_postback = False
+            follow_up_saved_with_postback = False
             payload = ""
-        return (last_conversation, is_postback, payload)
+        return (last_conversation, follow_up_saved_with_postback, payload)
 
     @classmethod
     def set_postback(cls, conversation_id, postback_payload):
