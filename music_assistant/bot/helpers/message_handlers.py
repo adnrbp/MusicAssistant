@@ -14,7 +14,6 @@ from songs.models import Favorite
 from songs.models import Song
 from users.models import User
 
-from pprint import pprint
 
 
 class MessageType(Enum):
@@ -63,7 +62,6 @@ class Handlers():
                 message_text = message['message']['text']
                 #event_type = MessageType.text
 
-                # response_data should be a dictionary of results/etc
                 (response_data, response_type) = self.process_text(message_text)
                 return (sender_id, response_data, response_type)
 
@@ -89,8 +87,6 @@ class Handlers():
         random text: outputs Default Options
         lyrics text (with previous Postback) : process request text
         """
-        # check session from request
-        print("\n\n Processing text")
         (conversation, needs_follow_up, payload) = Conversation.get_last_message(self.conversation)
         Message.save_text(conversation, message_text)
         if needs_follow_up:
@@ -109,9 +105,7 @@ class Handlers():
                             "payload": "FAVORITE_{}_PAYLOAD",
                         }
                     }
-                    return (response_data, ResponseType.results) #.results
-            # if "FAVORITE_" in payload:
-            #     return (message_text, ResponseType.default)
+                    return (response_data, ResponseType.results)
 
         return (message_text, ResponseType.default)
 
@@ -156,7 +150,6 @@ class Handlers():
             return (response_data, ResponseType.text)
             
         if postback_payload == "FAVORITES_PAYLOAD":
-            # query user favorite songs songs
             favorite_songs = Song.favorites_by_user(self.sender_id)
 
             response_message = "tienes {} cancion(es) en tu lista de favoritos, estas son:".format(len(favorite_songs))
@@ -169,7 +162,6 @@ class Handlers():
                     "payload": "REMOVE_{}_PAYLOAD",
                 }
             }
-            # crear template de ResponseType.favorites
             return (response_data, ResponseType.results)
 
         if postback_payload == "COUNT_USERS":
@@ -179,9 +171,8 @@ class Handlers():
             return (response_data, ResponseType.text)
 
         if postback_payload == "CHAT_DAYS":
-            #query
-            chats_daily_quantity = 1
-            response_data = "Aproximadamente hay {} chat(s) en el día".format(chats_daily_quantity)
+            chats_daily_quantity = Conversation.quantity_by_day()
+            response_data = "Aproximadamente hay {} chat(s) en el día a día".format(chats_daily_quantity)
             self.record_message_and_payload(response_data, postback_payload)
             return (response_data, ResponseType.text)
 
@@ -198,7 +189,6 @@ class Handlers():
                     "payload": "FAVORITE_{}_PAYLOAD",
                 }
             }
-            # crear template de ResponseType.favorites
             return (response_data, ResponseType.results)
 
 

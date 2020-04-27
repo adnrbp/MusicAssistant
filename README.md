@@ -13,15 +13,13 @@ Music Assistant is an app to search lyrics and save your favorite songs.
   - [X] (keep session per user)
   - [X] (save all conversations info)
   - [X] Stats show number of people that used the app
-  - [ ] Stats show number of chats per day
-  - [X] Stats show most popular song      | (search all, which gets searchd more frequently)
+  - [X] Stats show number of chats per day
+  - [X] Stats show most popular song
   
   (Should) 
-  - [ ] Remove  songs from Favorite list
-  - [ ] Stats show avg session time       | (till last interaction)
+  - [ ] Remove songs from Favorite list
+  - [ ] Stats show avg session time
 
-  (Nice)
-  - [ ] ..
 
 ### 2. Flujo Mensajes:
   - facebook -> /webhook -> View -> fb_webhook -> message_handlers -> (fb_messages <-> MusixMatch ) -> facebook
@@ -30,14 +28,13 @@ Music Assistant is an app to search lyrics and save your favorite songs.
   - **fb_messages**: build bot response, send musixMatch Api requests and send message back to fb
 
 ### 3. Progress TO-DO:
-  - [X] handle differences (postback/message)              | message_handlers
-  - [X] connect and search some lyrics with musixMatch     | MUSICX-service
+  - [X] handle differences (postback/message)
+  - [X] connect and search some lyrics with musixMatch
   - [X] create models for users and messages
   - [X] create models for songs (attrib: favorites) MODELS
-  - [X] add to favorites postback                          | Interaction+process
+  - [X] add to favorites postback
   - [X] session per user (separate) (use-id)
-  - [ ] conversations model (store info stats)             | MODELS
-        -  (date+lyrics searched + song + favorited?)
+  - [X] conversations model (store info stats)             
   - [X] show stats on persistent menu
 
 
