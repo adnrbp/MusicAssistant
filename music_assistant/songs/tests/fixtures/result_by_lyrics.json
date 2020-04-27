@@ -1,0 +1,51 @@
+{
+    "message":{
+       "header":{
+          "status_code":200,
+          "execute_time":0.035324811935425,
+          "available":1
+       },
+       "body":{
+          "track_list":[
+             {
+                "track":{
+                   "track_id":194990642,
+                   "track_name":"Toosie Slide",
+                   "track_name_translation_list":[
+ 
+                   ],
+                   "track_rating":100,
+                   "commontrack_id":109222618,
+                   "instrumental":0,
+                   "explicit":1,
+                   "has_lyrics":1,
+                   "has_subtitles":1,
+                   "has_richsync":1,
+                   "num_favourite":472,
+                   "album_id":37484781,
+                   "album_name":"Toosie Slide - Single",
+                   "artist_id":33491453,
+                   "artist_name":"Drake",
+                   "track_share_url":"https:\/\/www.musixmatch.com\/lyrics\/Drake\/Toosie-Slide?utm_source=application&utm_campaign=api&utm_medium=",
+                   "track_edit_url":"https:\/\/www.musixmatch.com\/lyrics\/Drake\/Toosie-Slide\/edit?utm_source=application&utm_campaign=api&utm_medium=",
+                   "restricted":0,
+                   "updated_time":"2020-04-16T12:12:34Z",
+                   "primary_genres":{
+                      "music_genre_list":[
+                         {
+                            "music_genre":{
+                               "music_genre_id":34,
+                               "music_genre_parent_id":0,
+                               "music_genre_name":"Music",
+                               "music_genre_name_extended":"Music",
+                               "music_genre_vanity":"Music"
+                            }
+                         }
+                      ]
+                   }
+                }
+             }
+          ]
+       }
+    }
+ }

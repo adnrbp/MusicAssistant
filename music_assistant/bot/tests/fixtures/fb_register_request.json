@@ -1,0 +1,5 @@
+{
+    "hub.challenge": ["2021531252"], 
+    "hub.verify_token": ["FB_VERIFY_TOKEN"], 
+    "hub.mode": ["subscribe"]
+}
