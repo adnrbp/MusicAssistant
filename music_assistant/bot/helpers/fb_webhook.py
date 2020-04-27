@@ -31,7 +31,7 @@ class FbWebhookAPI():
         return (data, result)
 
     @classmethod
-    def process_message(cls, entries, session):    
+    def process_message(cls, entries):    
         """ Receive messages from user entries in a request"""
         print("\n ENTRIES!!!!")
         pprint(entries)

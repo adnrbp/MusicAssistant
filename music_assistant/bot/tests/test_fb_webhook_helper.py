@@ -56,9 +56,8 @@ class FbWebhookAPITest(TestCase):
         request = {"entry": [
                     {"messaging": message_content},
                     ]}
-        session = {}
         # Act
-        data = FbWebhookAPI.process_message(request,session)
+        data = FbWebhookAPI.process_message(request)
         # Assert
         self.assertEqual(
                 mock_handler.facebook_message.call_count,
