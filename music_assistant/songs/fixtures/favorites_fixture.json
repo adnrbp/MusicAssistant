@@ -1,0 +1,26 @@
+[
+    {
+       "model":"songs.favorite",
+       "pk":1,
+       "fields":{
+          "song":1,
+          "user":22
+       }
+    },
+    {
+       "model":"songs.favorite",
+       "pk":2,
+       "fields":{
+          "song":2,
+          "user":22
+       }
+    },
+    {
+       "model":"songs.favorite",
+       "pk":3,
+       "fields":{
+          "song":3,
+          "user":22
+       }
+    }
+ ]

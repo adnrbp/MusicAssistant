@@ -1,0 +1,27 @@
+[
+{
+    "model": "songs.song", 
+    "pk": 1, 
+    "fields": {
+        "name": "Godzilla (feat. Juice WRLD)", 
+        "artist_name": "Eminem", 
+        "remote_id": "190591560"}
+}, 
+{
+    "model": "songs.song", 
+    "pk": 2, 
+    "fields": {
+        "name": "All Eyes on You", 
+        "artist_name": "Meek Mill", 
+        "remote_id": "84151336"}
+}, 
+{
+    "model": "songs.song", 
+    "pk": 3, 
+    "fields": {
+        "name": "Back To Sleep (Remix) (Mixed)", 
+        "artist_name": "Chris Brown feat. Usher & ZAYN", 
+        "remote_id": "168367673"
+    }
+}
+]
