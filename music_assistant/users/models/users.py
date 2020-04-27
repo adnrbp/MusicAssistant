@@ -26,3 +26,6 @@ class User(models.Model):
         except User.DoesNotExist:
             user = None
         return user
+    @classmethod
+    def users_quantity(cls):
+        return cls.objects.count()
