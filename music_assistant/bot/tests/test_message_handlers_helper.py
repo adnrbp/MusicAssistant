@@ -48,29 +48,89 @@ class HandlersTest(TestCase):
         # Assert
         self.assertEqual(mock_handlers_process_postback.call_count,1)
 
-
     # REACTIVE proc: show options and search lyrics
 
+    @patch('music_assistant.bot.helpers.message_handlers.Conversation.get_last_message',
+        autospec=True)
+    @patch('music_assistant.bot.helpers.message_handlers.Message.save_text',
+        autospec=True)
+    @patch('music_assistant.bot.helpers.message_handlers.MusixMatchAPI.search_lyrics',
+        autospec=True)
+    def test_initial_text_gives_default_message_back(self, 
+                    mock_search_lyrics,
+                    mock_save_text, 
+                    mock_get_last_message):
+        # Arrange
+        conversation_id = 1
+        needs_follow_up = False
+        payload = ""
+        mock_get_last_message.return_value = (conversation_id,needs_follow_up, payload)
 
-    def test_initial_text_gives_default_message_back(self):
-        pass
+        # Act
+        (response_data, response_type) = self.handler.process_text("hola")
 
-    def test_lyrics_payload_search_lyrics_on_musix_match(self):
-        #also that sends .results
-        pass
-
-    def test_lyrics_payload_search_with_empty_result_send_sorry(self):
-        pass
+        # Assert
+        self.assertEqual(response_type, ResponseType.default)
+        mock_save_text.assert_called_with(conversation_id,"hola")
+        self.assertEqual(mock_search_lyrics.call_count,0)
 
 
-    #OPTIONS proc: search lyrics, save to favorites
+    @patch('music_assistant.bot.helpers.message_handlers.Conversation.get_last_message',
+        autospec=True)
+    @patch('music_assistant.bot.helpers.message_handlers.Message.save_text',
+        autospec=True)
+    @patch('music_assistant.bot.helpers.message_handlers.MusixMatchAPI.search_lyrics',
+        autospec=True)
+    def test_lyrics_payload_search_lyrics_on_musix_match(self, 
+                    mock_search_lyrics,
+                    mock_save_text, 
+                    mock_get_last_message):
+        # Arrange
+        conversation_id = 1
+        needs_follow_up = True
+        payload = "LYRICS_PAYLOAD"
+        found_songs_data = [{"name":"Sample_song"}]
+        mock_get_last_message.return_value = (conversation_id,needs_follow_up, payload)
+        mock_search_lyrics.return_value = found_songs_data
 
+        # Act
+        (response_data, response_type) = self.handler.process_text("Sample Lyrics")
 
-    def test_on_search_lyrics_option_selected_saves_postback_mark_to_wait_for_lyrics(self):
-        pass
+        # Assert
+        self.assertEqual(response_type, ResponseType.results)
+        self.assertEqual(len(response_data["data"]),len(found_songs_data))
+        #self.assertTrue(response_data["text"].startswith("Encontré"))
 
-    def test_on_favorite_option_selected_saves_track_in_users_favorites(self):
-        pass
+        mock_save_text.assert_called_with(conversation_id,"Sample Lyrics")
+        self.assertEqual(mock_search_lyrics.call_count,1)
+
+    @patch('music_assistant.bot.helpers.message_handlers.Conversation.get_last_message',
+        autospec=True)
+    @patch('music_assistant.bot.helpers.message_handlers.Message.save_text',
+        autospec=True)
+    @patch('music_assistant.bot.helpers.message_handlers.MusixMatchAPI.search_lyrics',
+        autospec=True)
+    def test_lyrics_payload_search_with_empty_result_send_sorry(self, 
+                    mock_search_lyrics,
+                    mock_save_text, 
+                    mock_get_last_message):
+        # Arrange
+        conversation_id = 1
+        needs_follow_up = True
+        payload = "LYRICS_PAYLOAD"
+        found_songs_data = []
+        mock_get_last_message.return_value = (conversation_id,needs_follow_up, payload)
+        mock_search_lyrics.return_value = found_songs_data
+
+        # Act
+        (response_data, response_type) = self.handler.process_text("Sample Lyrics2")
+
+        # Assert
+        self.assertEqual(response_type, ResponseType.text)
+        self.assertTrue(response_data.startswith("Lo siento"))
+
+        mock_save_text.assert_called_with(conversation_id,"Sample Lyrics2")
+        self.assertEqual(mock_search_lyrics.call_count,1)
 
 
     # RESPONSE proc: render messages (default, simple text)
@@ -112,3 +172,30 @@ class HandlersTest(TestCase):
         FbMessageAPI_mock.assert_called_with(sender_id=sender_id)
         self.assertEqual(mock_fb.initial_instructions_message.call_count,0)
         self.assertEqual(mock_fb.text_message.call_count,1)
+
+
+class HandlersOptionsTest(TestCase):
+    """ OPTIONS proc: search lyrics, save to favorites"""
+
+    def setUp(self):
+        self.mock_record_message_and_payload = patch(
+            'music_assistant.bot.helpers.message_handlers.Handlers.record_message_and_payload',autospec=True).start()
+        self.mock_search_track_by_id = patch(
+            'music_assistant.bot.helpers.message_handlers.Handlers.search_track_by_id',autospec=True).start()
+        # User and Conversation Models
+        self.mock_users_quantity = patch(
+            'music_assistant.bot.helpers.message_handlers.User.users_quantity',autospec=True).start()
+        self.mock_quantity_by_day = patch(
+            'music_assistant.bot.helpers.message_handlers.Conversation.quantity_by_day',autospec=True).start()
+        # Song Model
+        self.mock_favorites_by_user = patch(
+            'music_assistant.bot.helpers.message_handlers.Song.favorites_by_user',autospec=True).start()
+        self.mock_get_top_songs = patch(
+            'music_assistant.bot.helpers.message_handlers.Song.get_top_songs',autospec=True).start()
+        self.addCleanup(patch.stopall)
+
+    def test_on_search_lyrics_option_selected_saves_postback_mark_to_wait_for_lyrics(self):
+        pass
+
+    def test_on_favorite_option_selected_saves_track_in_users_favorites(self):
+        pass

@@ -93,7 +93,7 @@ class Handlers():
             if payload=="LYRICS_PAYLOAD":
                 found_songs_data = MusixMatchAPI.search_lyrics(message_text)
                 if len(found_songs_data) < 1 :
-                    sorry_message = "No pudimos encontrar la canción :("
+                    sorry_message = "Lo siento, No pudimos encontrar la canción :("
                     return (sorry_message, ResponseType.text)
                 else:
                     response_message = "Encontré {} canciones, espero esté la que buscabas".format(len(found_songs_data))

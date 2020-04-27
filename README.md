@@ -22,7 +22,7 @@ Music Assistant is an app to search lyrics and save your favorite songs.
 
 
 ### 2. Flujo Mensajes:
-  - facebook -> /webhook -> View -> fb_webhook -> message_handlers -> (fb_messages <-> MusixMatch ) -> facebook
+  - facebook -> /webhook -> View -> fb_webhook -> (message_handlers <-> MusixMatch ) fb_messages -> facebook
   - **fb_webhook**: handles inicial connection processing request data
   - **message_handlers**: determine type of Input Message and call a type of response
   - **fb_messages**: build bot response, send musixMatch Api requests and send message back to fb
