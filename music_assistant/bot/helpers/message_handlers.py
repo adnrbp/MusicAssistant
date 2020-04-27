@@ -119,6 +119,11 @@ class Handlers():
         """ 
         Understand payload-type(switch), process something and create response
         """
+        if postback_payload == "GET_STARTED_BOT":
+            response_data = "Soy un bot de busqueda musical por letras/lyrics"
+            self.record_message_and_payload(response_data, postback_payload)
+            return (response_data, ResponseType.default)
+
         if postback_payload == "LYRICS_PAYLOAD":
             response_data = "escribe la letra que quieres buscar :)"
             self.record_message_and_payload(response_data, postback_payload, with_follow_up=True)
@@ -135,12 +140,26 @@ class Handlers():
             self.record_message_and_payload(response_data, postback_payload)
 
             return (response_data, ResponseType.text)
+
+
+        if "REMOVE_" in postback_payload:
+            track_id = postback_payload.split("_")[1]
+            #removed = self.remove_track_by_id(track_id)
+            removed = True
+
+            if removed:
+                response_data = "Se Borró la canción seleccionada"
+            else:
+                response_data = "La canción no existe en tu lista de canciones"
+            self.record_message_and_payload(response_data, postback_payload)
+
+            return (response_data, ResponseType.text)
             
         if postback_payload == "FAVORITES_PAYLOAD":
             # query user favorite songs songs
             favorite_songs = Song.favorites_by_user(self.sender_id)
 
-            response_message = "tienes {} canciones en tu lista de favoritos, estas son:".format(len(favorite_songs))
+            response_message = "tienes {} cancion(es) en tu lista de favoritos, estas son:".format(len(favorite_songs))
             self.record_message_and_payload(response_message, postback_payload)
             response_data = {
                 "text": response_message,
@@ -152,6 +171,39 @@ class Handlers():
             }
             # crear template de ResponseType.favorites
             return (response_data, ResponseType.results)
+
+        if postback_payload == "COUNT_USERS":
+            #query
+            users_quantity = 1
+            response_data = "Aproximadamente {} usuario(s) utilizan el bot".format(users_quantity)
+            self.record_message_and_payload(response_data, postback_payload)
+            return (response_data, ResponseType.text)
+
+        if postback_payload == "CHAT_DAYS":
+            #query
+            chats_daily_quantity = 1
+            response_data = "Aproximadamente hay {} chat(s) en el día".format(chats_daily_quantity)
+            self.record_message_and_payload(response_data, postback_payload)
+            return (response_data, ResponseType.text)
+
+        if postback_payload == "TOP_FAVORITES":
+            # query user favorite songs songs
+            top_songs = Song.get_top_songs()
+
+            response_message = "estos son las top 5 canciones:"
+            self.record_message_and_payload(response_message, postback_payload)
+            response_data = {
+                "text": response_message,
+                "data": top_songs,
+                "buttons":{
+                    "title": "Favorita",
+                    "payload": "FAVORITE_{}_PAYLOAD",
+                }
+            }
+            # crear template de ResponseType.favorites
+            return (response_data, ResponseType.results)
+
+
 
     # OUTPUT
     def generate_response(self, sender_id, received_message, response_type):
@@ -181,3 +233,6 @@ class Handlers():
         was_saved = Favorite.save_track(user, track)
         return (track, was_saved)
 
+    # def remove_track_by_id(self,track_id):
+    #     """ Remove favorite track saved """
+    #     pass

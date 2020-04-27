@@ -14,11 +14,11 @@ Music Assistant is an app to search lyrics and save your favorite songs.
   - [X] (save all conversations info)
   - [ ] Stats show number of people that used the app
   - [ ] Stats show number of chats per day
-  - [ ] Stats show most popular song      | (search all, which gets searchd more frequently)
-  - [ ] Stats show avg session time       | (till last interaction)
+  - [X] Stats show most popular song      | (search all, which gets searchd more frequently)
   
   (Should) 
-  - [ ] ..
+  - [ ] Remove  songs from Favorite list
+  - [ ] Stats show avg session time       | (till last interaction)
 
   (Nice)
   - [ ] ..
@@ -38,7 +38,7 @@ Music Assistant is an app to search lyrics and save your favorite songs.
   - [X] session per user (separate) (use-id)
   - [ ] conversations model (store info stats)             | MODELS
         -  (date+lyrics searched + song + favorited?)
-  - [ ] show stats in home :D
+  - [X] show stats on persistent menu
 
 
 ### 4. Tests
