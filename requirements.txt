@@ -10,7 +10,7 @@ text-unidecode==1.2
 
 
 # Django
-Django==2.2.2
+Django==2.2.10
 
 # Environment
 django-environ==0.4.5
