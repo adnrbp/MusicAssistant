@@ -10,6 +10,9 @@ from songs.services import MusixMatchAPI
 # Models
 from bot.models import Conversation
 from bot.models import Message
+from songs.models import Favorite
+from songs.models import Song
+from users.models import User
 
 from pprint import pprint
 
@@ -46,8 +49,6 @@ class Handlers():
     # INPUT 
     def process_type(self, message):
         """ Determine/Define the type of message and call the handler."""
-        # print("\n\n MENSAJEEEEE TYPE")
-        # pprint(message)
         if 'message' in message:
             if 'quick_reply' in message['message']:
                 sender_id = message['sender']['id']
@@ -66,6 +67,14 @@ class Handlers():
                 (response_data, response_type) = self.process_text(message_text)
                 return (sender_id, response_data, response_type)
 
+            if 'attachments' in message['message']:
+                sender_id = message['sender']['id']
+                #message_text = message['message']['attachments']
+                response_data = ":)"
+                response_type = ResponseType.default
+
+                return (sender_id, response_data, response_type)
+
         if 'postback' in message:
             sender_id = message['sender']['id']
             postback_payload = message['postback']['payload']
@@ -82,17 +91,19 @@ class Handlers():
         """
         # check session from request
         print("\n\n Processing text")
-        (conversation, is_postback, payload) = Conversation.get_last_message(self.conversation)
+        (conversation, needs_follow_up, payload) = Conversation.get_last_message(self.conversation)
         Message.save_text(conversation, message_text)
-        if is_postback:
+        if needs_follow_up:
             if payload=="LYRICS_PAYLOAD":
-                response_data = MusixMatchAPI.search_lyrics(message_text)
-                if len(response_data) < 1 :
+                found_songs_data = MusixMatchAPI.search_lyrics(message_text)
+                if len(found_songs_data) < 1 :
                     sorry_message = "No pudimos encontrar la canción :("
                     return (sorry_message, ResponseType.text)
                 else:
-                    return (response_data, ResponseType.results) #.results
-            #if "FAVORITE_" in postback_payload:
+                    return (found_songs_data, ResponseType.results) #.results
+            # if "FAVORITE_" in payload:
+            #     return (message_text, ResponseType.default)
+
         return (message_text, ResponseType.default)
 
     def process_postback(self, postback_payload):
@@ -101,17 +112,30 @@ class Handlers():
         """
         if postback_payload == "LYRICS_PAYLOAD":
             response_data = "escribe la letra que quieres buscar :)"
-            conversation = Conversation.set_postback(self.conversation, postback_payload)
-            Message.save_text(conversation,response_data,is_postback=True)
+            self.record_message_and_payload(response_data, postback_payload, with_follow_up=True)
             return (response_data, ResponseType.text)
 
         if "FAVORITE_" in postback_payload:
             track_id = postback_payload.split("_")[1]
-            # query track + save in db
-            response_data = "se guardó la canción en tu lista de favoritos, id: "+track_id
+            (track, was_saved) = self.search_track_by_id(track_id)
+
+            if was_saved:
+                response_data = "se guardó la canción {} en tu lista de favoritos".format(track.name)
+            else:
+                response_data = "la canción {} ya estaba en tu lista de favoritos".format(track.name)
             # mostrar lista de favoritos?, indicando como postback
-            conversation = Conversation.set_postback(self.conversation, postback_payload)
-            Message.save_text(conversation,response_data)
+            self.record_message_and_payload(response_data, postback_payload)
+
+            return (response_data, ResponseType.text)
+            
+        if postback_payload == "FAVORITES_PAYLOAD":
+            # query user favorite songs songs
+            favorite_songs = Song.favorites_by_user(self.sender_id)
+
+            response_data = "tienes {} canciones en tu lista de favoritos, estas son:".format(len(favorite_songs))
+            self.record_message_and_payload(response_data, postback_payload)
+
+            # crear template de ResponseType.favorites
             return (response_data, ResponseType.text)
 
     # OUTPUT
@@ -127,3 +151,17 @@ class Handlers():
         elif response_type == ResponseType.results:
             fb.lyrics_result_template(received_message, self.user_name)
        
+
+    def record_message_and_payload(self,message, payload, with_follow_up=False):
+        """Save conversation Message and Mark message to followup """
+        conversation = Conversation.set_postback(self.conversation, payload)
+        Message.save_text(conversation, message, with_follow_up=with_follow_up)
+
+
+    def search_track_by_id(self,track_id):
+        """ Query track remotely + save in db """
+        track = MusixMatchAPI.search_and_store_track(track_id)
+        user = User.get_user_by_sender_id(self.sender_id)
+        was_saved = Favorite.save_track(user, track)
+        return (track, was_saved)
+

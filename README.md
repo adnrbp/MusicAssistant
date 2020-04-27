@@ -8,7 +8,7 @@ Music Assistant is an app to search lyrics and save your favorite songs.
   - [X] User sends a section of some lyrics             | (1-Postback + Lyricstext)
   - [X] User receives the song related to that lyrics   | (1-RESPONSE)
   - [X] Result song should have the name and artist     | (1-RESPONSE)
-  - [ ] User saves can tag a result song as favorite    | (2-postback[add to favorites?])
+  - [X] User saves can tag a result song as favorite    | (2-postback[add to favorites?])
   - [ ] User sees his list of favorite songs            | [DB](3-postback:seeMyListOfFavorites)
   - [X] (keep session per user)
   - [X] (save all conversations info)
@@ -33,8 +33,8 @@ Music Assistant is an app to search lyrics and save your favorite songs.
   - [X] handle differences (postback/message)              | message_handlers
   - [X] connect and search some lyrics with musixMatch     | MUSICX-service
   - [X] create models for users and messages
-  - [ ] create models for songs (attrib: favorites) MODELS
-  - [ ] add to favorites postback                          | Interaction+process
+  - [X] create models for songs (attrib: favorites) MODELS
+  - [X] add to favorites postback                          | Interaction+process
   - [X] session per user (separate) (use-id)
   - [ ] conversations model (store info stats)             | MODELS
         -  (date+lyrics searched + song + favorited?)
