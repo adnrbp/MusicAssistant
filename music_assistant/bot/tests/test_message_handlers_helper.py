@@ -1,6 +1,6 @@
 # Tests
 from unittest import TestCase
-from mock import Mock, patch
+from mock import Mock, patch, ANY
 
 # Helpers
 from music_assistant.bot.helpers import Handlers
@@ -178,24 +178,64 @@ class HandlersOptionsTest(TestCase):
     """ OPTIONS proc: search lyrics, save to favorites"""
 
     def setUp(self):
+        self.handler = Handlers(
+            sender_id=234234234,
+            user_name="user1",
+            conversation_id=2)
         self.mock_record_message_and_payload = patch(
-            'music_assistant.bot.helpers.message_handlers.Handlers.record_message_and_payload',autospec=True).start()
+                                    'music_assistant.bot.helpers.message_handlers.Handlers.record_message_and_payload',autospec=True).start()
         self.mock_search_track_by_id = patch(
-            'music_assistant.bot.helpers.message_handlers.Handlers.search_track_by_id',autospec=True).start()
+                                    'music_assistant.bot.helpers.message_handlers.Handlers.search_track_by_id',autospec=True).start()
         # User and Conversation Models
         self.mock_users_quantity = patch(
-            'music_assistant.bot.helpers.message_handlers.User.users_quantity',autospec=True).start()
+                                    'music_assistant.bot.helpers.message_handlers.User.users_quantity',autospec=True).start()
         self.mock_quantity_by_day = patch(
-            'music_assistant.bot.helpers.message_handlers.Conversation.quantity_by_day',autospec=True).start()
+                                    'music_assistant.bot.helpers.message_handlers.Conversation.quantity_by_day',autospec=True).start()
         # Song Model
         self.mock_favorites_by_user = patch(
-            'music_assistant.bot.helpers.message_handlers.Song.favorites_by_user',autospec=True).start()
+                                    'music_assistant.bot.helpers.message_handlers.Song.favorites_by_user',autospec=True).start()
         self.mock_get_top_songs = patch(
-            'music_assistant.bot.helpers.message_handlers.Song.get_top_songs',autospec=True).start()
+                                    'music_assistant.bot.helpers.message_handlers.Song.get_top_songs',autospec=True).start()
         self.addCleanup(patch.stopall)
 
-    def test_on_search_lyrics_option_selected_saves_postback_mark_to_wait_for_lyrics(self):
-        pass
+    def test_search_lyrics_option_saves_message_with_follow_up_mark_to_wait_for_lyrics(self):
+        # Arrange
+        postback_payload = "LYRICS_PAYLOAD"
+        # Act
+        (response_data, response_type) = self.handler.process_postback(postback_payload)
 
-    def test_on_favorite_option_selected_saves_track_in_users_favorites(self):
-        pass
+        # Assert
+        self.assertEqual(response_type, ResponseType.text)
+        self.mock_record_message_and_payload.assert_called_with(ANY,ANY,ANY,with_follow_up=True)
+
+    def test_favorite_option_saves_track_in_users_favorites(self):
+        # Arrange
+        track_id = '4545'
+        postback_payload = "FAVORITE_{}_PAYLOAD".format(track_id)
+        class Song:
+            pass
+        song = Song()
+        song.name = "Sample_song"
+        self.mock_search_track_by_id.return_value=(song,True)
+        
+        # Act
+        (response_data, response_type) = self.handler.process_postback(postback_payload)
+
+        # Assert
+        self.assertEqual(response_type, ResponseType.text)
+        self.mock_search_track_by_id.assert_called_with(ANY, track_id)
+        self.assertTrue(song.name in response_data)
+
+    def test_list_favorites_option_shows_all_users_favorite_songs(self):
+        # Arrange
+        postback_payload = "FAVORITES_PAYLOAD"
+        sender_id = self.handler.sender_id
+        found_songs_data = [{"name":"Sample_song"}]
+        self.mock_favorites_by_user.return_value = found_songs_data
+
+        # Act
+        (response_data, response_type) = self.handler.process_postback(postback_payload)
+
+        # Assert
+        self.mock_favorites_by_user.assert_called_with(sender_id)
+        self.assertEqual(len(response_data["data"]),len(found_songs_data))
